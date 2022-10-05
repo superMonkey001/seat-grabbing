@@ -1,0 +1,38 @@
+spring:
+  thymeleaf:
+    cache: false
+  datasource:
+    url: jdbc:mysql://localhost:3306/grabbing?useUnicode=true&serverTimezon=Asiz/Shanghai&characterEncoding=UTF-8&autoReconnect=true&useSSL=false
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: root
+    hikari:
+      pool-name: DateHikariCP
+      minimum-idle: 1800000
+      maximum-pool-size: 10
+      auto-commit: true
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+
+  redis:
+    host: 117.50.181.73
+    port: 6379
+    database: 0
+    timeout: 10000ms
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: 10000ms
+        max-idle: 200
+        min-idle: 5
+
+mybatis-plus:
+  config-locations: classpath*:/mapper/*Mapper.xml
+  type-aliases-package: cn.hncj.grabbing.pojo
+
+logging:
+  level:
+    cn.hncj.grabbing.mapper: debug
+
+
