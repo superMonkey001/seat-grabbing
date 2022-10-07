@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>订单详情</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <!-- jquery -->
+    <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+    <!-- bootstrap -->
+    <link rel="stylesheet" type="text/css" th:href="@{/bootstrap/css/bootstrap.min.css}" />
+    <script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+    <!-- layer -->
+    <script type="text/javascript" th:src="@{/layer/layer.js}"></script>
+    <!-- common.js -->
+    <script type="text/javascript" th:src="@{/js/common.js}"></script>
+</head>
+<body>
+<div class="panel panel-default">
+    <div class="panel-heading">抢座订单详情</div>
+    <table class="table" id="order">
+        <tr>
+            <td>座位名称</td>
+            <td th:text="${seats.seatsName}" colspan="3"></td>
+        </tr>
+        <tr>
+            <td>座位图片</td>
+            <td colspan="2"><img th:src="@{${seats.seatsImg}}" width="200" height="200" /></td>
+        </tr>
+        <tr>
+            <td>抢到时间</td>
+            <td th:text="${#dates.format(order.createDate, 'yyyy-MM-dd HH:mm:ss')}" colspan="2"></td>
+        </tr>
+        <tr>
+            <td>订单状态</td>
+            <td >
+                <span th:if="${order.status eq 0}">未完成</span>
+                <span th:if="${order.status eq 1}">已完成</span>
+            </td>
+            <td>
+                <button class="btn btn-primary btn-block" type="submit" id="payButton">点击确认</button>
+            </td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>

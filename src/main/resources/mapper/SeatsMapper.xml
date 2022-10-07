@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hncj.grabbing.mapper.SeatsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.hncj.grabbing.pojo.Seats">
+        <id column="id" property="id"/>
+        <result column="seats_name" property="seatsName"/>
+        <result column="seats_title" property="seatsTitle"/>
+        <result column="seats_img" property="seatsImg"/>
+        <result column="seats_detail" property="seatsDetail"/>
+        <result column="seats_stock" property="seatsStock"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id
+        , seats_name, seats_titile, seats_img, seats_detail, seats_price, seats_stock
+    </sql>
+    <select id="findSeatsVo"
+            resultType="cn.hncj.grabbing.vo.SeatsVo">
+        SELECT g.id,
+               g.seats_name,
+               g.seats_title,
+               g.seats_img,
+               g.seats_detail,
+               g.seats_stock,
+               sg.stock_count,
+               sg.start_date,
+               sg.end_date
+        FROM t_seats g
+        LEFT JOIN t_grab_seats
+        AS sg
+        ON g.id = sg.seats_id
+    </select>
+    <select id="findGoodsVoByGoodsId" resultType="cn.hncj.grabbing.vo.SeatsVo">
+        SELECT g.id,
+               g.seats_name,
+               g.seats_titile,
+               g.seats_img,
+               g.seats_detail,
+               g.seats_price,
+               g.seats_stock,
+               sg.grabbing_price,
+               sg.stock_count,
+               sg.start_date,
+               sg.end_date
+        FROM t_seats g
+                 LEFT JOIN t_grabbing_seats
+            AS sg
+                           ON g.id = sg.seats_id
+        where g.id = #{seatsId}
+    </select>
+    <select id="findSeatsVoBySeatsId" resultType="cn.hncj.grabbing.vo.SeatsVo">
+        SELECT g.id,g.seats_name,g.seats_title,g.seats_img,g.seats_detail,g.seats_stock,sg.stock_count,sg.start_date,sg.end_date
+        FROM t_seats g
+        LEFT JOIN t_grab_seats
+        AS sg
+        ON g.id = sg.seats_id
+        WHERE g.id = #{seatsId}
+    </select>
+
+</mapper>

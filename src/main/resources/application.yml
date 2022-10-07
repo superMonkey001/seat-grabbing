@@ -14,7 +14,6 @@ spring:
       max-lifetime: 1800000
       connection-timeout: 30000
       connection-test-query: SELECT 1
-
   redis:
     host: 117.50.181.73
     port: 6379
@@ -26,6 +25,36 @@ spring:
         max-wait: 10000ms
         max-idle: 200
         min-idle: 5
+
+  rabbitmq:
+    host: 117.50.181.73
+    port: 5672
+    username: admin
+    password: admin
+    # 虚拟主机
+    virtual-host: /
+    listener:
+      simple:
+        # 消费者最小数量
+        concurrency: 10
+        # 消费者最大数量
+        max-concurrency:
+        # 限制消费者每次只处理一条消息，处理完再继续下一条消息
+        prefetch: 1
+        # 启动时是否默认启动容器
+        auto-startup: true
+        # 被拒绝是重新进入队列
+        default-requeue-rejected: true
+    template:
+      retry:
+        enabled: true
+        initial-interval: 1000ms
+        # 重试最大次数，默认3次
+        max-attempts: 3
+        # 重试最大间隔时间，默认10000ms
+        max-interval: 10000ms
+        # 重试的间隔乘数。比如配2，第一次就等10s，第二次就等20s....
+        multiplier: 1
 
 mybatis-plus:
   config-locations: classpath*:/mapper/*Mapper.xml

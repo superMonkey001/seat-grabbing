@@ -56,5 +56,9 @@ public class User implements Serializable {
      */
     private Integer loginCount;
 
+    /**
+     * 已抢座位数
+     */
+    private Integer grabCount;
 
 }

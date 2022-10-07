@@ -45,7 +45,8 @@ public class SessionInterceptor implements HandlerInterceptor {
         }
         else {
             // 因为toList方法跳转到seatsList页面，而该页面需要传递user对象，因此需要这次判断
-            if (((HandlerMethod) handler).getMethod().getName().equals("toList")) {
+            String methodName = ((HandlerMethod) handler).getMethod().getName();
+            if (methodName.equals("toList") || methodName.equals("toDetail") || methodName.equals(("doGrab"))) {
                 request.setAttribute("user",user);
             }
             return true;

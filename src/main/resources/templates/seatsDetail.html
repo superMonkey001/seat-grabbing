@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>座位详情</title>
+    <!-- jquery -->
+    <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+    <!-- bootstrap -->
+    <link rel="stylesheet" type="text/css" th:href="@{/bootstrap/css/bootstrap.min.css}"/>
+    <script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+    <!-- layer -->
+    <script type="text/javascript" th:src="@{/layer/layer.js}"></script>
+    <!-- common.js -->
+    <script type="text/javascript" th:src="@{/js/common.js}"></script>
+</head>
+<body>
+<div class="panel panel-default">
+    <div class="panel-heading">抢座座位详情</div>
+    <div class="panel-body">
+        <span th:if="${user eq null}"> 您还没有登录，请登陆后再操作<br/></span>
+    </div>
+    <table class="table" id="seats">
+        <tr>
+            <td>座位名称</td>
+            <td colspan="3" th:text="${seats.seatsName}"></td>
+        </tr>
+        <tr>
+            <td>座位图片</td>
+            <td colspan="3"><img th:src="@{${seats.seatsImg}}" width="200" height="200"/></td>
+        </tr>
+        <tr>
+            <td>抢座开始时间</td>
+            <td th:text="${#dates.format(seats.startDate,'yyyy-MM-dd HH:mm:ss')}"></td>
+            <td id="grabTip">
+                <input type="hidden" id="remainSeconds" th:value="${remainSeconds}">
+                <span th:if="${grabStatus eq 0}">抢座倒计时: <span id="countDown" th:text="${remainSeconds}"></span>秒
+                </span>
+                <span th:if="${grabStatus eq 1}">抢座进行中</span>
+                <span th:if="${grabStatus eq 2}">抢座已结束</span>
+            </td>
+            <td>
+                <form id="grabForm" method="post" action="/grab/doGrab">
+                    <input type="hidden" name="seatsId" th:value="${seats.id}">
+                    <button class="btn btn-primary btn-block" type="submit" id="buyButton">立即抢座</button>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td>座位数量</td>
+            <td colspan="3" th:text="${seats.stockCount}"></td>
+        </tr>
+    </table>
+</div>
+</body>
+<script>
+    $(function () {
+        countDown();
+    });
+    function countDown() {
+        var remainSeconds = $("#remainSeconds").val();
+        var timeout;
+        //抢座还未开始
+        if (remainSeconds > 0) {
+            $("#buyButton").attr("disabled", true);
+            timeout = setTimeout(function () {
+                $("#countDown").text(remainSeconds - 1);
+                $("#remainSeconds").val(remainSeconds - 1);
+                countDown();
+            }, 1000);
+            // 抢座进行中
+        } else if (remainSeconds == 0) {
+            $("#buyButton").attr("disabled", false);
+            if (timeout) {
+                clearTimeout(timeout);
+            }
+            $("#grabTip").html("抢座进行中")
+        } else {
+            $("#buyButton").attr("disabled", true);
+            $("#grabTip").html("抢座已经结束");
+        }
+    };
+
+</script>
+</html>
